@@ -138,8 +138,8 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 
 /usr/src/traffic/iftrafficd &
 
-screen -S natlog -d -m /usr/src/nat64143/natlog.sh
-screen -S dnslog -d -m /usr/src/nat64143/dnslog.sh
+screen -S natlog -d -m /usr/src/gzlog/natlog.sh -e NEW,DESTROY
+screen -S dnslog -d -m /usr/src/gzlog/dnslog.sh
 
 ```
 
@@ -160,7 +160,6 @@ iptables -F
 iptables -t nat -F
 
 iptables -t nat -A POSTROUTING -j MASQUERADE -o eth0 
-
 
 iptables -A INPUT -j ACCEPT -m state --state ESTABLISHED,RELATED
 iptables -A INPUT -j ACCEPT -i lo
@@ -203,7 +202,6 @@ default-lease-time 6000;
 max-lease-time 7200;
 
 ddns-update-style none;
-
 
 # eth0的地址段，仅仅声明
 subnet 202.38.64.128 netmask 255.255.255.128 {
