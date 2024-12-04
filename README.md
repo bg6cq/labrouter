@@ -80,6 +80,8 @@ cp traffic.html /var/www/html/index.html
 
 
 # 日志记录
+mkdir /natlog
+
 cd /usr/src
 git clone https://git.ustc.edu.cn/james/gzlog.git
 cd /usr/src/gzlog
@@ -133,6 +135,15 @@ ip add add 192.168.2.1/24 dev eth2
 
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
+modprobe nf_conntrack hashsize=400000
+cd /proc/sys/net/netfilter
+echo 1 > nf_conntrack_acct
+echo 60 > nf_conntrack_generic_timeout
+echo 10 > nf_conntrack_icmp_timeout
+echo 10 > nf_conntrack_tcp_timeout_syn_sent
+echo 10 > nf_conntrack_tcp_timeout_syn_recv
+echo 1800 > nf_conntrack_tcp_timeout_established
+
 /etc/rc.d/rc.firewall
 /etc/rc.d/rc.ipv6
 
@@ -154,8 +165,6 @@ chmod u+x /etc/rc.d/rc.firewall
 ```
 #!/bin/bash
 
-echo 1 > /proc/sys/net/netfilter/nf_conntrack_acct
-
 iptables -F
 iptables -t nat -F
 
@@ -169,8 +178,12 @@ iptables -A INPUT -j ACCEPT -p icmp
 #仅仅允许eth1内网连接22和80端口
 iptables -A INPUT -j ACCEPT  -p tcp --dport 22 -i eth1
 iptables -A INPUT -j ACCEPT  -p tcp --dport 80 -i eth1
-
 iptables -A INPUT -j DROP -i eth0
+
+iptables -A FORWARD -j ACCEPT -m state --state ESTABLISHED
+iptables -A FORWARD -j DROP -p tcp --dport 445
+iptables -A FORWARD -j DROP -p tcp --dport 135
+iptables -A FORWARD -j DROP -p tcp --dport 139
 ```
 
 ### 4.10 修改 /etc/rc.d/rc.ipv6
