@@ -205,7 +205,14 @@ brctl addif br6 eth2
 ebtables-legacy -t broute -A BROUTING -p ! ipv6 -j DROP
 ```
 
-### 4.11 修改 /etc/dhcp/dhcpd.conf
+### 4.11 修改 crontab，自动删除日志
+
+crontab -e
+```
+0 5 * * * find /natlog -maxdepth 1 -mtime +200 -name "*gz" -exec rm -rf {} \;
+```
+
+### 4.12 修改 /etc/dhcp/dhcpd.conf
 
 ```
 option domain-name "ustc.edu.cn";
