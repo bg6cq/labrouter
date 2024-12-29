@@ -48,7 +48,7 @@ ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ### 4.3 启用Devel 软件包
 ```
 #enable Devel rep
-sed -i -e "s/enabled=0/enabled=1" /etc/yum.repos.d/Rocky-Devel.repo
+sed -i -e "s/enabled=0/enabled=1/" /etc/yum.repos.d/Rocky-Devel.repo
 ```
 
 ### 4.4 修改日志保存时间、禁用SElinux
