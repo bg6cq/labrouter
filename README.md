@@ -66,7 +66,7 @@ yum install -y epel-release gcc git lz4-devel openssl-devel dialog
 yum install -y tcpdump telnet traceroute gd-devel httpd make m4
 yum install -y libpcap-devel lm_sensors bind-utils net-tools dhcp-server
 yum install -y bridge-utils conntrack-tools mtr tar autoconf 
-yum install -y automake libtool indent
+yum install -y automake libtool indent screen
 ```
 
 ### 4.6 安装简单软件
@@ -150,7 +150,7 @@ echo 1800 > nf_conntrack_tcp_timeout_established
 /usr/src/traffic/iftrafficd &
 
 screen -S natlog -d -m /usr/src/gzlog/natlog.sh -e NEW,DESTROY
-screen -S dnslog -d -m /usr/src/gzlog/dnslog.sh
+screen -S dnslog -d -m /usr/src/gzlog/dnslog.sh eth1
 
 ```
 
